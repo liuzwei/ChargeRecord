@@ -1,14 +1,14 @@
 import requests
 import json
 
+mainUrl = "http://batteryzuul.w-oasis.com/"
 loginUrl = "ebd/api/login"
 getByBsuUrl = "ebd/api/getBatteryNoByFollowBMS"
 
 class HttpUtil():
 
-    def __init__(self,url):
-        self.url = url
-
+    def __init__(self):
+        self.url = mainUrl
     # 登陆
     def login(self, **kargs):
         params = {"username":kargs['username'], "passwd":kargs['passwd']}

@@ -1,6 +1,7 @@
 import wx
 from wx.lib.pubsub import pub
 
+
 class LoginDialog(wx.Dialog):
     """
     Class to define login dialog

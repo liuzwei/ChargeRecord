@@ -1,7 +1,8 @@
 import wx
+from wx.lib.pubsub import pub
+
 import LoginDialog
 import SettingFrame
-from wx.lib.pubsub import pub
 
 
 class MainFrame(wx.Frame):
