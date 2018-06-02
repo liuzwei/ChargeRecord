@@ -1,4 +1,5 @@
 import wx
+import HttpUtil
 from wx.lib.pubsub import pub
 
 
@@ -47,10 +48,11 @@ class LoginDialog(wx.Dialog):
         """
         Check credentials and login
         """
-        stupid_password = "123456"
-        user_password = self.passwdContent.GetValue()
-        if user_password == stupid_password:
-            print("You are now logged in!")
+
+        hu = HttpUtil.HttpUtil()
+        result = hu.login(username=self.usernameContent.GetValue(), passwd=self.passwdContent.GetValue())
+        if result['code'] == 200:
+            print(result['data'])
             pub.sendMessage("frameListener", message="show")
             self.Destroy()
         else:
