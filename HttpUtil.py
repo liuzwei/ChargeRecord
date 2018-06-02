@@ -14,7 +14,9 @@ class HttpUtil():
         params = {"username":kargs['username'], "passwd":kargs['passwd']}
         headers = {"Content-Type":"application/json"}
         response = requests.post(self.url+loginUrl, data=json.dumps(params), headers=headers)
-        result = {"data":response.json(), "code":response.status_code}
+        result = {"code":response.status_code}
+        if response.content != None:
+            result['data'] = response.json()
         return result
     #根据从板获取电池组编号
     def getByBsucode(self, **kargs):
@@ -26,8 +28,8 @@ class HttpUtil():
 
 if __name__ == '__main__':
     httpUtil = HttpUtil("http://batteryzuul.w-oasis.com/")
-    # result = httpUtil.login(username='15001101536', passwd='123456')
-    result = httpUtil.getByBsucode(followbmsno='0B2224690118')
+    result = httpUtil.login(username='15001101535', passwd='123456')
+    # result = httpUtil.getByBsucode(followbmsno='0B2224690118')
     if result['code']==200:
         print("请求成功\n")
         print(result['data'])
