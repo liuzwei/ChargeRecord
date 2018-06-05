@@ -1,4 +1,5 @@
 import wx
+import HttpUtil
 from wx.lib.pubsub import pub
 
 import LoginDialog
@@ -377,19 +378,33 @@ class MainPanel(wx.Panel):
         self.Layout()
 
         #绑定事件
-        self.m_textCtrl1.Bind(wx.EVT_CHAR, self.enter)
-        self.m_textCtrl4.Bind(wx.EVT_CHAR, self.enter)
-        self.m_textCtrl41.Bind(wx.EVT_CHAR, self.enter)
-        self.m_textCtrl42.Bind(wx.EVT_CHAR, self.enter)
-        self.m_textCtrl43.Bind(wx.EVT_CHAR, self.enter)
-        self.m_textCtrl44.Bind(wx.EVT_CHAR, self.enter)
-        self.m_textCtrl45.Bind(wx.EVT_CHAR, self.enter)
-        self.m_textCtrl46.Bind(wx.EVT_CHAR, self.enter)
-        self.m_textCtrl47.Bind(wx.EVT_CHAR, self.enter)
+        self.m_textCtrl1.Bind(wx.EVT_TEXT_ENTER, self.enter)
+        self.m_textCtrl4.Bind(wx.EVT_TEXT_ENTER, self.enter)
+        self.m_textCtrl41.Bind(wx.EVT_TEXT_ENTER, self.enter)
+        self.m_textCtrl42.Bind(wx.EVT_TEXT_ENTER, self.enter)
+        self.m_textCtrl43.Bind(wx.EVT_TEXT_ENTER, self.enter)
+        self.m_textCtrl44.Bind(wx.EVT_TEXT_ENTER, self.enter)
+        self.m_textCtrl45.Bind(wx.EVT_TEXT_ENTER, self.enter)
+        self.m_textCtrl46.Bind(wx.EVT_TEXT_ENTER, self.enter)
+        self.m_textCtrl47.Bind(wx.EVT_TEXT_ENTER, self.enter)
     def enter(self, event):
         eIds = [10000, 10010, 10020, 10030, 10040, 10050, 10060, 10070]
         eId = event.Id
         if eId in eIds:
+            hp = HttpUtil.HttpUtil()
+            result = hp.getByBsucode(followbmsno=event.EventObject.Value)
+            print(result)
+            if result['code']==200:
+                body = result['data']
+                if body['code']=='1000':
+                    data = body['data']
+                    batteryNoCtrl =  self.FindWindowById(event.Id+1)
+                    batteryNoCtrl.SetValue(data['batteryNo'])
+                    groupCtrl = self.FindWindowById(event.Id+3)
+                    groupCtrl.SetValue(data['batteryGroupNo'])
+                else:
+                    alarmInfo = self.FindWindowById(event.Id+5)
+                    alarmInfo.SetValue(body['msg'])
             textCtrl = self.FindWindowById(event.Id+10)
             textCtrl.SetFocus()
             print("回车事件")
